@@ -1,5 +1,5 @@
 /**
- * PROTEC SEG — Spacing & Layout System
+ * PROTECT SEG — Spacing & Layout System
  */
 
 export const Spacing = {

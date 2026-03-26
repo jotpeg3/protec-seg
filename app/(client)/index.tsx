@@ -2,22 +2,22 @@
  * PROTECT SEG — Client Dashboard (Home) - Redesigned Light Theme
  */
 
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useEffect, useRef } from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Dimensions,
     Animated,
+    Dimensions,
     Image,
     Platform,
+    ScrollView,
     StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { router } from 'expo-router';
-import { Colors, Spacing, TextStyles, BorderRadius, Shadow } from '../../src/theme';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
+import { Colors, Spacing } from '../../src/theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -65,18 +65,18 @@ export default function ClientDashboard() {
                 {/* Header Top Bar */}
                 <View style={styles.headerBar}>
                     <View style={styles.headerCenter}>
-                        <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
+                        <View style={styles.brandShieldContainer}>
                             <Image
                                 source={require('../../assets/images/logo.png')}
-                                style={{ height: 26, width: 26 }}
+                                style={{ height: 60, width: 60 }}
                                 resizeMode="contain"
                             />
                         </View>
-                        <Text style={[styles.brandName, { color: '#FFFFFF', marginLeft: 6 }]}>PROTECT SEG</Text>
+                        <Text style={styles.brandName}>PROTECT SEG</Text>
                     </View>
                     <View style={styles.headerRight}>
-                        <TouchableOpacity style={[styles.avatarContainer, { backgroundColor: '#F3F4F6' }]}>
-                            <Text style={[styles.avatarText, { color: '#1E3A8A' }]}>J</Text>
+                        <TouchableOpacity style={styles.avatarContainer}>
+                            <Text style={styles.avatarText}>J</Text>
                             {/* In a real app, replace with <Image> */}
                         </TouchableOpacity>
                     </View>
@@ -91,7 +91,7 @@ export default function ClientDashboard() {
                 <View style={styles.statusCard}>
                     <View style={styles.statusTopRow}>
                         <View style={styles.statusIconHouseBg}>
-                            <Ionicons name="home" size={18} color="#FFFFFF" />
+                            <Ionicons name="home" size={18} color="#0A1C43" />
                         </View>
                         <Text style={styles.statusTextLabel}>Status:</Text>
                         <Text style={styles.statusTextValue}>Seguro</Text>
@@ -196,10 +196,15 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        height: HEADER_HEIGHT,
-        backgroundColor: '#0A1C43', // Deep Navy Blue
-        borderBottomLeftRadius: 0, // Squared
-        borderBottomRightRadius: 0, // Squared
+        height: 250, // Longer header
+        backgroundColor: '#FFFFFF', // White header
+        borderBottomLeftRadius: 40, // Curved bottom
+        borderBottomRightRadius: 40, // Curved bottom
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        elevation: 5,
     },
     scrollView: {
         flex: 1,
@@ -217,17 +222,17 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     headerCenter: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
     },
     brandShieldContainer: {
-        marginRight: 8,
+        marginRight: 0,
     },
     brandName: {
-        color: Colors.white,
-        fontSize: 18,
-        fontWeight: '800',
-        letterSpacing: 0.5,
+        color: '#0A1C43',
+        fontSize: 16,
+        fontWeight: '900',
+        letterSpacing: 1,
     },
     headerRight: {
         position: 'absolute',
@@ -252,7 +257,7 @@ const styles = StyleSheet.create({
     },
     greetingText: {
         paddingHorizontal: Spacing.xl,
-        color: Colors.white,
+        color: '#0A1C43',
         fontSize: 22,
         marginTop: 10,
         marginBottom: 24,
@@ -263,15 +268,15 @@ const styles = StyleSheet.create({
 
     // Status Card
     statusCard: {
-        backgroundColor: '#FF5E00', // Neon Orange Background
+        backgroundColor: '#0A1C43', // Back to Navy Blue
         marginHorizontal: Spacing.xl,
-        borderRadius: 0, // Squared
+        borderRadius: 20, // Rounded
         padding: Spacing.lg,
-        shadowColor: '#FF5E00',
+        shadowColor: '#0A1C43',
         shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.4,
-        shadowRadius: 12,
-        elevation: 10,
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 8,
         borderWidth: 0,
         zIndex: 10,
     },

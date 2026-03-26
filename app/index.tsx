@@ -1,19 +1,19 @@
 /**
- * PROTEC SEG — Splash / Welcome Screen
+ * PROTECT SEG — Splash / Welcome Screen
  */
 
+import { router } from 'expo-router';
 import React, { useEffect, useRef } from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
     Animated,
     Dimensions,
     Image,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
-import { router } from 'expo-router';
-import { Colors, LightTheme, Spacing, TextStyles } from '../src/theme';
 import { Button } from '../src/components/ui';
+import { Colors, LightTheme, Spacing, TextStyles } from '../src/theme';
 
 const { width, height } = Dimensions.get('window');
 

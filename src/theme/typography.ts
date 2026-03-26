@@ -1,5 +1,5 @@
 /**
- * PROTEC SEG — Typography System
+ * PROTECT SEG — Typography System
  * Font: Inter (clean, modern, professional)
  */
 

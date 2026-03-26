@@ -35,7 +35,7 @@ export default function ActiveTicketScreen() {
                     <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
                         <Image
                             source={require('../../assets/images/logo.png')}
-                            style={{ height: 26, width: 26 }}
+                            style={{ height: 60, width: 60 }}
                             resizeMode="contain"
                         />
                     </View>
@@ -178,10 +178,15 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        height: 140,
-        backgroundColor: '#0A1C43',
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
+        height: 250, // Longer header
+        backgroundColor: '#FFFFFF', // White header
+        borderBottomLeftRadius: 40, // Curved bottom
+        borderBottomRightRadius: 40, // Curved bottom
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        elevation: 5,
     },
     headerBar: {
         flexDirection: 'row',
@@ -193,17 +198,17 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     headerCenter: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
     },
     brandShieldContainer: {
-        marginRight: 8,
+        marginRight: 0,
     },
     brandTitle: {
-        color: '#FFFFFF',
-        fontSize: 18,
+        color: '#0A1C43', // Dark Navy Brand
+        fontSize: 16,
         fontWeight: '900',
-        letterSpacing: 0.5,
+        letterSpacing: 1,
     },
     content: {
         paddingHorizontal: Spacing.xl,
