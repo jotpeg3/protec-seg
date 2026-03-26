@@ -5,62 +5,51 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch: # Permite rodar manualmente pelo GitHub
+  workflow_dispatch:
 
 jobs:
   build-apk:
-    name: 🔨 Gerar APK Android
+    name: "🔨 Gerar APK Android"
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout do código
+      - name: "📥 Checkout do codigo"
         uses: actions/checkout@v4
 
-      - name: ⚙️ Configurar Node.js
+      - name: "⚙️ Configurar Node.js"
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: 📦 Instalar dependências
+      - name: "📦 Instalar dependencias"
         run: npm ci
 
-      - name: 🔧 Instalar EAS CLI
+      - name: "🔧 Instalar EAS CLI"
         run: npm install -g eas-cli
 
-      - name: 🏗️ Build do APK via EAS
-        run: eas build --platform android --profile preview --non-interactive --output ./build/protec-seg.apk
+      - name: "🏗️ Build do APK via EAS (nuvem)"
+        run: eas build --platform android --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
-      - name: 📤 Upload do APK como Artifact
+      - name: "📥 Baixar APK gerado pela EAS"
+        run: |
+          mkdir -p ./build
+          BUILD_URL=$(eas build:list --platform android --status finished --limit 1 --non-interactive --json | python3 -c "import sys,json; builds=json.load(sys.stdin); print(builds[0]['artifacts']['buildUrl'])" 2>/dev/null || echo "")
+          if [ -n "$BUILD_URL" ]; then
+            curl -L "$BUILD_URL" -o ./build/protec-seg.apk
+            echo "APK baixado com sucesso!"
+          else
+            echo "URL do APK nao encontrada, verifique em expo.dev"
+          fi
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: "📤 Upload do APK como Artifact"
         uses: actions/upload-artifact@v4
         with:
           name: PROTEC-SEG-APK
           path: ./build/protec-seg.apk
+          if-no-files-found: warn
           retention-days: 30
-
-      - name: 🚀 Criar Release Automático
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ github.run_number }}
-          name: "PROTEC SEG v1.0.${{ github.run_number }}"
-          body: |
-            ## 📱 PROTEC SEG - Nova Versão
-
-            **Build automático gerado pelo GitHub Actions.**
-
-            ### 📥 Como instalar o APK:
-            1. Baixe o arquivo `protec-seg.apk` abaixo
-            2. No seu Android, vá em **Configurações → Segurança → Fontes desconhecidas** e habilite
-            3. Abra o arquivo APK baixado e instale
-
-            ### 🔄 O que há de novo nesta versão:
-            - Build automático do código mais recente
-
-          files: ./build/protec-seg.apk
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
