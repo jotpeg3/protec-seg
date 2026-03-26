@@ -1,0 +1,66 @@
+name: Build APK (PROTEC SEG)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Permite rodar manualmente pelo GitHub
+
+jobs:
+  build-apk:
+    name: 🔨 Gerar APK Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: 📦 Instalar dependências
+        run: npm ci
+
+      - name: 🔧 Instalar EAS CLI
+        run: npm install -g eas-cli
+
+      - name: 🏗️ Build do APK via EAS
+        run: eas build --platform android --profile preview --non-interactive --output ./build/protec-seg.apk
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📤 Upload do APK como Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PROTEC-SEG-APK
+          path: ./build/protec-seg.apk
+          retention-days: 30
+
+      - name: 🚀 Criar Release Automático
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "PROTEC SEG v1.0.${{ github.run_number }}"
+          body: |
+            ## 📱 PROTEC SEG - Nova Versão
+
+            **Build automático gerado pelo GitHub Actions.**
+
+            ### 📥 Como instalar o APK:
+            1. Baixe o arquivo `protec-seg.apk` abaixo
+            2. No seu Android, vá em **Configurações → Segurança → Fontes desconhecidas** e habilite
+            3. Abra o arquivo APK baixado e instale
+
+            ### 🔄 O que há de novo nesta versão:
+            - Build automático do código mais recente
+
+          files: ./build/protec-seg.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
