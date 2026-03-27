@@ -2,22 +2,57 @@
  * PROTEC SEG — Patrol Profile
  */
 
-import React from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Platform,
-    StatusBar,
-    Image,
-} from 'react-native';
 import { router } from 'expo-router';
-import { Colors, LightTheme, Spacing, TextStyles, BorderRadius } from '../../src/theme';
-import { Card, Badge } from '../../src/components/ui';
+import React, { useEffect, useState } from 'react';
+import {
+    ActivityIndicator,
+    Image,
+    Platform,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { Badge, Card } from '../../src/components/ui';
+import { authService, Profile } from '../../src/services/authService';
+import { BorderRadius, Colors, Spacing, TextStyles } from '../../src/theme';
 
 export default function PatrolProfileScreen() {
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const data = await authService.getCurrentUser();
+                if (data) setProfile(data.profile);
+            } catch (error) {
+                console.log('Error fetching patrol profile:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProfile();
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            await authService.signOut();
+            router.replace('/');
+        } catch (error) {
+            console.log('Error signing out patrol:', error);
+        }
+    };
+    if (loading) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center' }]}>
+                <ActivityIndicator size="large" color={Colors.emerald[500]} />
+            </View>
+        );
+    }
+
     return (
         <ScrollView
             style={styles.container}
@@ -29,7 +64,7 @@ export default function PatrolProfileScreen() {
 
             <View style={styles.headerBar}>
                 <View style={styles.headerCenter}>
-                    <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
+                    <View style={styles.brandShieldContainer}>
                         <Image
                             source={require('../../assets/images/logo.png')}
                             style={{ height: 60, width: 60 }}
@@ -45,11 +80,13 @@ export default function PatrolProfileScreen() {
             <Card variant="elevated" padding="xl" style={styles.profileCard}>
                 <View style={styles.profileRow}>
                     <View style={styles.avatar}>
-                        <Text style={styles.avatarText}>CS</Text>
+                        <Text style={styles.avatarText}>
+                            {profile?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'P'}
+                        </Text>
                     </View>
                     <View style={styles.profileInfo}>
-                        <Text style={styles.profileName}>Carlos Silva</Text>
-                        <Text style={styles.profileId}>Patrulheiro #P-0042</Text>
+                        <Text style={styles.profileName}>{profile?.full_name || 'Patrulheiro'}</Text>
+                        <Text style={styles.profileId}>ID: {profile?.cpf_cnpj || '---'}</Text>
                         <Badge label="VERIFICADO ✓" variant="success" size="sm" />
                     </View>
                 </View>
@@ -90,7 +127,7 @@ export default function PatrolProfileScreen() {
 
             <TouchableOpacity
                 style={styles.logoutButton}
-                onPress={() => router.replace('/')}
+                onPress={handleLogout}
             >
                 <Text style={styles.logoutText}>🚪 Sair da conta</Text>
             </TouchableOpacity>

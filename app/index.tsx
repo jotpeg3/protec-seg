@@ -3,8 +3,9 @@
  */
 
 import { router } from 'expo-router';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+    ActivityIndicator,
     Animated,
     Dimensions,
     Image,
@@ -13,11 +14,35 @@ import {
     View,
 } from 'react-native';
 import { Button } from '../src/components/ui';
-import { Colors, LightTheme, Spacing, TextStyles } from '../src/theme';
+import { authService } from '../src/services/authService'; // Added
+import { Colors, LightTheme, Spacing, TextStyles } from '../src/theme'; // Added BorderRadius
 
 const { width, height } = Dimensions.get('window');
 
 export default function WelcomeScreen() {
+    const [checkingSession, setCheckingSession] = useState(true); // Added
+
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                const session = await authService.getCurrentUser();
+                if (session) {
+                    if (session.profile.role === 'client') {
+                        router.replace('/(client)');
+                    } else {
+                        router.replace('/(patrol)');
+                    }
+                }
+            } catch (error) {
+                console.log('Session check error:', error);
+            } finally {
+                setCheckingSession(false);
+            }
+        };
+
+        checkSession();
+    }, []);
+
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(50)).current;
     const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -66,13 +91,16 @@ export default function WelcomeScreen() {
         ).start();
     }, []);
 
+    if (checkingSession) {
+        return (
+            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color={Colors.navy[500]} />
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
-            {/* Background gradient circles */}
-            <View style={styles.bgCircle1} />
-            <View style={styles.bgCircle2} />
-            <View style={styles.bgCircle3} />
-
             {/* Shield Logo */}
             <Animated.View
                 style={[
@@ -145,35 +173,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: Spacing['2xl'],
-    },
-
-    // Background decoration
-    bgCircle1: {
-        position: 'absolute',
-        top: -height * 0.15,
-        right: -width * 0.3,
-        width: width * 0.8,
-        height: width * 0.8,
-        borderRadius: width * 0.4,
-        backgroundColor: Colors.navy[500] + '15',
-    },
-    bgCircle2: {
-        position: 'absolute',
-        bottom: -height * 0.1,
-        left: -width * 0.2,
-        width: width * 0.6,
-        height: width * 0.6,
-        borderRadius: width * 0.3,
-        backgroundColor: Colors.navy[500] + '10',
-    },
-    bgCircle3: {
-        position: 'absolute',
-        top: height * 0.3,
-        left: -width * 0.1,
-        width: width * 0.3,
-        height: width * 0.3,
-        borderRadius: width * 0.15,
-        backgroundColor: Colors.emerald[500] + '08',
     },
 
     // Logo

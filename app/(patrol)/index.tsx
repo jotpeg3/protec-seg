@@ -2,23 +2,22 @@
  * PROTECT SEG — Patrol Feed (Incoming Tickets)
  */
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
     Animated,
-    Vibration,
+    Dimensions,
     Image,
     Platform,
+    ScrollView,
     StatusBar,
-    Dimensions,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    Vibration,
+    View,
 } from 'react-native';
-import { Colors, LightTheme, Spacing, TextStyles, BorderRadius, Shadow } from '../../src/theme';
-import { Card, Badge, Button } from '../../src/components/ui';
-import { Ionicons } from '@expo/vector-icons';
+import { Badge, Button, Card } from '../../src/components/ui';
+import { BorderRadius, Colors, LightTheme, Shadow, Spacing, TextStyles } from '../../src/theme';
 
 const { width } = Dimensions.get('window');
 const HEADER_HEIGHT = 180;
@@ -102,7 +101,7 @@ export default function PatrolFeed() {
 
             <View style={styles.headerBar}>
                 <View style={styles.headerCenter}>
-                    <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
+                    <View style={styles.brandShieldContainer}>
                         <Image
                             source={require('../../assets/images/logo.png')}
                             style={{ height: 60, width: 60 }}

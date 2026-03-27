@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Platform, StatusBar, Image } from 'react-native';
-import { Colors, LightTheme, Spacing, TextStyles, BorderRadius } from '../../src/theme';
-import { Card, Badge } from '../../src/components/ui';
+import { Image, Platform, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Card } from '../../src/components/ui';
+import { BorderRadius, Colors, Spacing, TextStyles } from '../../src/theme';
 
 const MOCK_HISTORY = [
     { id: 'TK-098', type: 'SOS', client: 'João Silva', date: '25 Mar', time: '14:30', rating: 5, earnings: 'R$35' },
@@ -31,7 +31,7 @@ export default function HistoryScreen() {
 
             <View style={styles.headerBar}>
                 <View style={styles.headerCenter}>
-                    <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
+                    <View style={styles.brandShieldContainer}>
                         <Image
                             source={require('../../assets/images/logo.png')}
                             style={{ height: 60, width: 60 }}

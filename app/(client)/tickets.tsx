@@ -4,19 +4,18 @@
 
 import React, { useState } from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
     FlatList,
-    Platform,
-    StatusBar,
     Image,
+    Platform,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { router } from 'expo-router';
-import { Colors, LightTheme, Spacing, TextStyles, BorderRadius } from '../../src/theme';
-import { Card, Badge, Button } from '../../src/components/ui';
+import { Badge, Button, Card } from '../../src/components/ui';
+import { BorderRadius, Colors, Spacing, TextStyles } from '../../src/theme';
 
 type TicketStatus = 'all' | 'open' | 'in_progress' | 'resolved';
 
@@ -106,7 +105,7 @@ export default function TicketsScreen() {
 
             <View style={styles.headerBar}>
                 <View style={styles.headerCenter}>
-                    <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
+                    <View style={styles.brandShieldContainer}>
                         <Image
                             source={require('../../assets/images/logo.png')}
                             style={{ height: 60, width: 60 }}

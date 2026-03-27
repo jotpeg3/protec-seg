@@ -4,17 +4,16 @@
 
 import React, { useState } from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Platform,
-    StatusBar,
     Image,
+    Platform,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    View
 } from 'react-native';
-import { Colors, LightTheme, Spacing, TextStyles, BorderRadius } from '../../src/theme';
-import { Card, Badge, Button } from '../../src/components/ui';
+import { Badge, Button, Card } from '../../src/components/ui';
+import { BorderRadius, Colors, LightTheme, Spacing, TextStyles } from '../../src/theme';
 
 type TicketPhase = 'en_route' | 'arrived' | 'resolving';
 
@@ -32,7 +31,7 @@ export default function ActiveTicketScreen() {
 
             <View style={styles.headerBar}>
                 <View style={styles.headerCenter}>
-                    <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
+                    <View style={styles.brandShieldContainer}>
                         <Image
                             source={require('../../assets/images/logo.png')}
                             style={{ height: 60, width: 60 }}

@@ -2,19 +2,19 @@
  * PROTEC SEG — Payments Screen (Client)
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    View,
-    Text,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-    Platform,
-    StatusBar,
     Image,
+    Platform,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { Colors, LightTheme, Spacing, TextStyles, BorderRadius } from '../../src/theme';
-import { Card, Badge, Button } from '../../src/components/ui';
+import { Badge, Button, Card } from '../../src/components/ui';
+import { BorderRadius, Colors, Spacing, TextStyles } from '../../src/theme';
 
 const MOCK_INVOICES = [
     { id: 'INV-001', month: 'Março 2026', amount: 99.0, status: 'pending', dueDate: '05 Abr 2026', plan: 'Premium' },
@@ -34,7 +34,7 @@ export default function PaymentsScreen() {
 
             <View style={styles.headerBar}>
                 <View style={styles.headerCenter}>
-                    <View style={[styles.brandShieldContainer, { backgroundColor: '#E0E2E5', borderRadius: 0, padding: 4 }]}>
+                    <View style={styles.brandShieldContainer}>
                         <Image
                             source={require('../../assets/images/logo.png')}
                             style={{ height: 60, width: 60 }}
